@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import {LogIn, LogOut, User } from "lucide-react";
+import { LogIn, LogOut, User } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,21 +12,23 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
-import img from "../assets/logo.png";
+import logo from "../assets/logo.png";
+import { ModeToggle } from "./ui/dark-toggle";
 
 export function Navbar() {
   return (
-    <nav className="flex items-center justify-between p-4 bg-background border-b-slate-200">
+    <nav className="flex items-center justify-between px-4 py-2 border-b dark:bg-black bg-white">
       <div className="flex items-center space-x-4">
         <Link href="/" className="flex items-center space-x-2">
-          <Image src={img} alt="Site Logo" width={40} height={40} />
-          <span className="font-bold text-3xl italic text-blue-500 ">Yap</span>
+          <Image src={logo} alt="Yap Logo" width={40} height={40} />
+          <span className="font-bold text-3xl italic text-blue-400">Yap</span>
         </Link>
       </div>
       <div className="flex items-center space-x-4">
+        <ModeToggle  />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+            <Button variant="outline" className="relative h-8 w-8 rounded-full">
               <Avatar className="h-8 w-8">
                 <AvatarImage src="/avatars/01.png" alt="@username" />
                 <AvatarFallback>UN</AvatarFallback>
