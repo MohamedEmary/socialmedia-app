@@ -17,7 +17,7 @@ import { ModeToggle } from "./ui/dark-toggle";
 
 export function Navbar() {
   return (
-    <nav className="flex items-center justify-between px-4 py-2 border-b dark:bg-black bg-white">
+    <nav className="flex items-center justify-between fixed top-0 w-full z-10 px-4 py-2 border-b dark:bg-black bg-white">
       <div className="flex items-center space-x-4">
         <Link href="/" className="flex items-center space-x-2">
           <Image src={logo} alt="Yap Logo" width={40} height={40} />

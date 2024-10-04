@@ -41,7 +41,7 @@ export default function RootLayout({
           disableTransitionOnChange>
           <Provider store={reduxStore}>
             <Navbar />
-            <div className="container mt-6">{children}</div>
+            <div className="container mt-16">{children}</div>
             <Toaster />
           </Provider>
         </ThemeProvider>
