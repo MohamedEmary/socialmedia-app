@@ -1,4 +1,4 @@
-import { authState, loginData } from "@/app/types/auth.types";
+import { authState, loginData, signupData } from "@/app/types/auth.types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -16,6 +16,26 @@ export const login = createAsyncThunk(
     const config = {
       method: "post",
       url: "https://linked-posts.routemisr.com/users/signin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    return axios
+      .request(config)
+      .then((response) => response.data)
+      .catch((error) => error);
+  }
+);
+
+export const signup = createAsyncThunk(
+  "auth/signup",
+
+  (data: signupData) => {
+    const config = {
+      method: "post",
+      url: "https://linked-posts.routemisr.com/users/signup",
       headers: {
         "Content-Type": "application/json",
       },
@@ -51,6 +71,21 @@ const authSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(login.rejected, (state) => {
+      state.isError = true;
+      state.isLoading = false;
+    });
+
+    // =====================================
+
+    builder.addCase(signup.fulfilled, (state) => {
+      state.isError = false;
+      state.isLoading = false;
+    });
+    builder.addCase(signup.pending, (state) => {
+      state.isError = false;
+      state.isLoading = true;
+    });
+    builder.addCase(signup.rejected, (state) => {
       state.isError = true;
       state.isLoading = false;
     });

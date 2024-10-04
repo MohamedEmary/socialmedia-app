@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { LogIn, LogOut, User } from "lucide-react";
+import { LogIn, LogOut, User, UserPlus } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,7 +25,7 @@ export function Navbar() {
         </Link>
       </div>
       <div className="flex items-center space-x-4">
-        <ModeToggle  />
+        <ModeToggle />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="relative h-8 w-8 rounded-full">
@@ -54,6 +54,13 @@ export function Navbar() {
               <DropdownMenuItem>
                 <LogIn className="mr-2 h-4 w-4" />
                 <span>Login</span>
+              </DropdownMenuItem>
+            </Link>
+            <DropdownMenuSeparator />
+            <Link href="/signup">
+              <DropdownMenuItem>
+                <UserPlus className="mr-2 h-4 w-4" />
+                <span>Signup</span>
               </DropdownMenuItem>
             </Link>
           </DropdownMenuContent>
