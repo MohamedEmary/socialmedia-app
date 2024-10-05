@@ -25,3 +25,13 @@ export interface CommentRequest {
   content: string | null;
   post: string | null;
 }
+
+export interface CommentResponse {
+  message: string;
+  comments: Comment[];
+}
+
+export interface PostResponse {
+  message: string;
+  post: Post;
+}

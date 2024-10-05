@@ -3,6 +3,8 @@ import axios from "axios";
 import {
   Comment,
   CommentRequest,
+  CommentResponse,
+  PostResponse,
   Post as PostType,
 } from "@/app/types/post.types";
 
@@ -10,15 +12,36 @@ interface InitialState {
   allPosts: null | PostType[];
   isLoading: boolean;
   isError: boolean;
-  // postComments: null | Comment[];
+  postComments: null | Comment[];
+  singlePost: null | PostType;
 }
 
 const initialState: InitialState = {
   allPosts: null,
   isLoading: false,
   isError: false,
-  // postComments: null,
+  postComments: null,
+  singlePost: null,
 };
+
+export const getSinglePost = createAsyncThunk(
+  "posts/getSinglePost",
+  (id: string) => {
+    const config = {
+      url: `https://linked-posts.routemisr.com/posts/${id}`,
+      headers: {
+        token: localStorage.getItem("token"),
+      },
+    };
+
+    return axios
+      .request(config)
+      .then((response) => response.data as PostResponse)
+      .catch((error) => {
+        throw error;
+      });
+  }
+);
 
 export const getPosts = createAsyncThunk(
   "posts/getPosts",
@@ -53,9 +76,7 @@ export const addComment = createAsyncThunk(
 
     return axios
       .request(config)
-      .then((response) => {
-        console.log(response.data);
-      })
+      .then((response) => response.data as CommentResponse)
       .catch((error) => {
         console.log(error);
       });
@@ -93,6 +114,22 @@ const postsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(addComment.rejected, (state) => {
+      state.isError = true;
+      state.isLoading = false;
+    });
+
+    // ===========================================================
+
+    builder.addCase(getSinglePost.fulfilled, (state, action) => {
+      state.isError = false;
+      state.isLoading = false;
+      state.singlePost = action.payload.post;
+    });
+    builder.addCase(getSinglePost.pending, (state) => {
+      state.isError = false;
+      state.isLoading = true;
+    });
+    builder.addCase(getSinglePost.rejected, (state) => {
       state.isError = true;
       state.isLoading = false;
     });
