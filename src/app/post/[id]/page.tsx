@@ -1,6 +1,7 @@
 "use client";
 import { Post as PostType } from "@/app/types/post.types";
 import Post from "@/components/post";
+import { PostSkeleton } from "@/components/post-skeleton";
 import { getSinglePost } from "@/lib/Redux/PostsSlice";
 import reduxStore from "@/lib/Redux/ReduxStore";
 import { useEffect } from "react";
@@ -19,7 +20,7 @@ function Page({ params }) {
   }, []);
 
   return (
-    <>{post ? <Post post={post} showAllComments={true} /> : <p>loading</p>}</>
+    <>{post ? <Post post={post} showAllComments={true} /> : <PostSkeleton commentCount={3} />}</>
   );
 }
 
