@@ -15,6 +15,7 @@ import {
   Post as PostType,
   Comment,
   CommentRequest,
+  CommentResponse,
 } from "@/app/types/post.types";
 import Image from "next/image";
 import { addComment } from "@/lib/Redux/PostsSlice";
@@ -55,7 +56,13 @@ export default function Post({
         content: newComment.trim(),
         post: post.id,
       };
-      dispatch(addComment(comment));
+
+      dispatch(addComment(comment)).then((res) => {
+        const payload: CommentResponse = res.payload;
+        if (payload.message === "success") {
+          setComments(payload.comments);
+        }
+      });
       setNewComment("");
     }
   };
@@ -64,7 +71,7 @@ export default function Post({
     router.push(`/user/${userId}`);
   };
   const handleOpenPost = (postId: string) => {
-    router.push(`/post/${postId}`);
+    router.push(`/post/${postId}`); //?fromApp=true
   };
 
   const formatDate = (dateString: string) => {
@@ -83,6 +90,7 @@ export default function Post({
           className="cursor-pointer"
           onClick={() => handleUserProfile(post.user._id)}>
           <AvatarImage src={post.user.photo} alt={post.user.name} />
+          {/* use the first letter of the user name as a fallback */}
           <AvatarFallback>{post.user.name[0]}</AvatarFallback>
         </Avatar>
         <div>
@@ -91,7 +99,11 @@ export default function Post({
             onClick={() => handleUserProfile(post.user._id)}>
             {post.user.name}
           </h2>
-          <p className="text-sm text-gray-500">{formatDate(post.createdAt)}</p>
+          <p
+            className="text-sm text-gray-500 cursor-pointer"
+            onClick={() => handleOpenPost(post.id)}>
+            {formatDate(post.createdAt)}
+          </p>
         </div>
       </CardHeader>
       <CardContent className="space-y-4 relative">
@@ -176,40 +188,32 @@ export default function Post({
               ))
             ) : (
               <>
-                <div
-                  key={comments[comments.length - 1]._id}
-                  className="flex items-start gap-2">
+                <div key={comments[0]._id} className="flex items-start gap-2">
                   <Avatar
                     className="w-8 h-8 cursor-pointer"
                     onClick={() =>
-                      handleUserProfile(
-                        comments[comments.length - 1].commentCreator._id
-                      )
+                      handleUserProfile(comments[0].commentCreator._id)
                     }>
                     <AvatarImage
-                      src={comments[comments.length - 1].commentCreator.photo}
-                      alt={comments[comments.length - 1].commentCreator.name}
+                      src={comments[0].commentCreator.photo}
+                      alt={comments[0].commentCreator.name}
                     />
                     <AvatarFallback>
-                      {comments[comments.length - 1].commentCreator.name[0]}
+                      {comments[0].commentCreator.name[0]}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       <p
                         className="text-sm font-semibold cursor-pointer"
-                        onClick={() =>
-                          handleUserProfile(comments[comments.length - 1]._id)
-                        }>
-                        {comments[comments.length - 1].commentCreator.name}
+                        onClick={() => handleUserProfile(comments[0]._id)}>
+                        {comments[0].commentCreator.name}
                       </p>
                       <p className="text-xs text-gray-500">
-                        {formatDate(comments[comments.length - 1].createdAt)}
+                        {formatDate(comments[0].createdAt)}
                       </p>
                     </div>
-                    <p className="text-sm">
-                      {comments[comments.length - 1].content}
-                    </p>
+                    <p className="text-sm">{comments[0].content}</p>
                   </div>
                 </div>
                 <Button
