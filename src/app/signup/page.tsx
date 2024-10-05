@@ -46,7 +46,7 @@ export default function Page() {
     rePassword: yup
       .string()
       .required("Password Confirmation is required")
-      .oneOf([yup.ref("password"), undefined], "Passwords must match"),
+      .oneOf([yup.ref("password")], "Passwords must match"),
 
     dateOfBirth: yup
       .date()

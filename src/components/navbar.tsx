@@ -43,7 +43,9 @@ export function Navbar() {
               </DropdownMenuItem>
             </Link>
             <DropdownMenuSeparator />
-            <Link href="/logout">
+            <Link
+              href="/login"
+              onClick={() => localStorage.removeItem("token")}>
               <DropdownMenuItem>
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Log out</span>

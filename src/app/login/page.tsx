@@ -1,7 +1,7 @@
 "use client";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { AtSign, Lock } from "lucide-react";
+import { AtSign, Lock, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -25,10 +25,7 @@ export default function Page() {
       .string()
       .email("Invalid Email Address")
       .required("Email is required"),
-    password: yup
-      .string()
-      .min(10, "Password must be at least 10 characters")
-      .required("Password is required"),
+    password: yup.string().required("Password is required"),
   });
 
   const dispatch = useDispatch<typeof reduxStore.dispatch>();
@@ -40,15 +37,12 @@ export default function Page() {
     password: "",
   };
 
-  // email: 'za3bola@gmail.com'
-  // password: 'Za3bola@123'
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: schema,
     onSubmit: (values: loginData) => {
       dispatch(login(values)).then((msg) => {
         const message: string = msg.payload.message;
-        console.log(msg);
         if (message === "success") {
           router.push("/");
         } else {
@@ -92,7 +86,7 @@ export default function Page() {
                   {formik.errors.email}
                 </span>
               )}
-              <Label className="font-bold" htmlFor="pass">
+              <Label className="font-bold" htmlFor="password">
                 Password
               </Label>
               <div className="relative">
@@ -118,6 +112,7 @@ export default function Page() {
         </CardContent>
         <CardFooter>
           <Button type="submit" className="w-full" variant="outline">
+            <LogIn className="mr-2 h-4 w-4" />
             Login
           </Button>
         </CardFooter>
