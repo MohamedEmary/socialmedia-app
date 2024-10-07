@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import reduxStore from "@/lib/Redux/ReduxStore";
 import { Post as PostType } from "./types/post.types";
 import { PostSkeletonList } from "@/components/post-skeleton";
+import AddPost from "../components/add-post";
 
 export default function Page() {
   const dispatch = useDispatch<typeof reduxStore.dispatch>();
@@ -20,6 +21,7 @@ export default function Page() {
 
   return (
     <>
+      <AddPost />
       <div className="space-y-3">
         {allPosts ? (
           allPosts.map((post) => <Post key={post.id} post={post} />)
