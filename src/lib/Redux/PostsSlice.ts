@@ -7,22 +7,34 @@ import {
   PostResponse,
   Post as PostType,
 } from "@/app/types/post.types";
+import { myInfo } from "@/app/types/other.type";
 
 interface InitialState {
   allPosts: null | PostType[];
+  myPosts: null | PostType[];
   isLoading: boolean;
   isError: boolean;
   postComments: null | Comment[];
   singlePost: null | PostType;
+  myInfo: null | myInfo;
 }
 
 const initialState: InitialState = {
   allPosts: null,
+  myPosts: null,
   isLoading: false,
   isError: false,
   postComments: null,
   singlePost: null,
+  myInfo: null,
 };
+
+interface getMyPostsArgs {
+  id: string;
+  limit?: number;
+}
+
+const token: string | null = localStorage.getItem("token");
 
 export const getSinglePost = createAsyncThunk(
   "posts/getSinglePost",
@@ -30,7 +42,7 @@ export const getSinglePost = createAsyncThunk(
     const config = {
       url: `https://linked-posts.routemisr.com/posts/${id}`,
       headers: {
-        token: localStorage.getItem("token"),
+        token: token,
       },
     };
 
@@ -43,19 +55,54 @@ export const getSinglePost = createAsyncThunk(
   }
 );
 
+export const getMyData = createAsyncThunk("posts/getMyData", () => {
+  const config = {
+    url: `https://linked-posts.routemisr.com/users/profile-data`,
+    headers: {
+      token: token,
+    },
+  };
+
+  return axios
+    .request(config)
+    .then((response) => response.data as myInfo)
+    .catch((error) => {
+      throw error;
+    });
+});
+
+export const getMyPosts = createAsyncThunk(
+  "posts/getMyPosts",
+  ({ id, limit = 25 }: getMyPostsArgs) => {
+    const config = {
+      url: `https://linked-posts.routemisr.com/users/${id}/posts?limit=${limit}`,
+      headers: {
+        token: token,
+      },
+    };
+
+    return axios
+      .request(config)
+      .then((response) => response.data.posts.reverse() as PostType[])
+      .catch((error) => {
+        throw error;
+      });
+  }
+);
+
 export const getPosts = createAsyncThunk(
   "posts/getPosts",
   (limit: number = 25) => {
     const config = {
       url: `https://linked-posts.routemisr.com/posts?limit=${limit}`,
       headers: {
-        token: localStorage.getItem("token"),
+        token: token,
       },
     };
 
     return axios
       .request(config)
-      .then((response) => response.data.posts as PostType[])
+      .then((response) => response.data.posts.reverse() as PostType[])
       .catch((error) => {
         throw error;
       });
@@ -69,7 +116,7 @@ export const addComment = createAsyncThunk(
       method: "post",
       url: "https://linked-posts.routemisr.com/comments",
       headers: {
-        token: localStorage.getItem("token"),
+        token: token,
       },
       data: data,
     };
@@ -130,6 +177,38 @@ const postsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getSinglePost.rejected, (state) => {
+      state.isError = true;
+      state.isLoading = false;
+    });
+
+    // ===========================================================
+
+    builder.addCase(getMyPosts.fulfilled, (state, action) => {
+      state.myPosts = action.payload;
+      state.isError = false;
+      state.isLoading = false;
+    });
+    builder.addCase(getMyPosts.pending, (state) => {
+      state.isError = false;
+      state.isLoading = true;
+    });
+    builder.addCase(getMyPosts.rejected, (state) => {
+      state.isError = true;
+      state.isLoading = false;
+    });
+
+    // ===========================================================
+
+    builder.addCase(getMyData.fulfilled, (state, action) => {
+      state.myInfo = action.payload;
+      state.isError = false;
+      state.isLoading = false;
+    });
+    builder.addCase(getMyData.pending, (state) => {
+      state.isError = false;
+      state.isLoading = true;
+    });
+    builder.addCase(getMyData.rejected, (state) => {
       state.isError = true;
       state.isLoading = false;
     });
