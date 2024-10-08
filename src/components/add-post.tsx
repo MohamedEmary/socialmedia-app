@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ImagePlus, X } from "lucide-react";
+import { ImagePlus, SquarePen, X } from "lucide-react";
 import Image from "next/image";
 import axios from "axios";
 import { toast } from "@/hooks/use-toast";
@@ -80,7 +80,10 @@ export default function AddPost() {
   return (
     <Card className="w-full max-w-2xl mx-auto mb-3">
       <CardHeader>
-        <CardTitle className="text-xl">Create a New Post</CardTitle>
+        <CardTitle className="text-xl flex items-center">
+          <SquarePen className="inline-block pr-2" size={30} /> Create a New
+          Post
+        </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">

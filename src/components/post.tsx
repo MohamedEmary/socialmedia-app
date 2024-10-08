@@ -67,9 +67,6 @@ export default function Post({
     }
   };
 
-  const handleUserProfile = (userId: string) => {
-    router.push(`/user/${userId}`);
-  };
   const handleOpenPost = (postId: string) => {
     router.push(`/post/${postId}`); //?fromApp=true
   };
@@ -86,19 +83,17 @@ export default function Post({
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader className="flex flex-row items-center gap-4">
-        <Avatar
-          className="cursor-pointer"
-          onClick={() => handleUserProfile(post.user._id)}>
-          <AvatarImage src={post.user.photo} alt={post.user.name} />
+        <Avatar>
+          <AvatarImage
+            src={post.user.photo}
+            alt={post.user.name}
+            className="object-cover"
+          />
           {/* use the first letter of the user name as a fallback */}
           <AvatarFallback>{post.user.name[0]}</AvatarFallback>
         </Avatar>
         <div>
-          <h2
-            className="text-lg font-semibold cursor-pointer"
-            onClick={() => handleUserProfile(post.user._id)}>
-            {post.user.name}
-          </h2>
+          <h2 className="text-lg font-semibold">{post.user.name}</h2>
           <p
             className="text-sm text-gray-500 cursor-pointer"
             onClick={() => handleOpenPost(post.id)}>
@@ -139,7 +134,11 @@ export default function Post({
             onChange={(e) => setNewComment(e.target.value)}
             className="flex-1"
           />
-          <Button size="icon" onClick={handleAddComment}>
+          <Button
+            size="icon"
+            onClick={handleAddComment}
+            variant="outline"
+            className="text-black dark:text-white bg-transparent">
             <Send className="h-4 w-4" />
             <span className="sr-only">Send comment</span>
           </Button>
@@ -148,19 +147,10 @@ export default function Post({
         {/* Render the comments section only if there are comments */}
         {comments.length > 0 && (
           <div className="w-full space-y-4">
-            {/* 
-            If the number of comments is greater than 1 and showAllComments 
-            is true, display all comments
-            Otherwise, display the first comment and a button to show all comments 
-            */}
-            {comments.length > 1 && showAllComments ? (
+            {showAllComments ? (
               comments.map((comment) => (
                 <div key={comment._id} className="flex items-start gap-2">
-                  <Avatar
-                    className="w-8 h-8 cursor-pointer"
-                    onClick={() =>
-                      handleUserProfile(comment.commentCreator._id)
-                    }>
+                  <Avatar className="w-8 h-8">
                     <AvatarImage
                       src={comment.commentCreator.photo}
                       alt={comment.commentCreator.name}
@@ -171,11 +161,7 @@ export default function Post({
                   </Avatar>
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <p
-                        className="text-sm font-semibold cursor-pointer"
-                        onClick={() =>
-                          handleUserProfile(comment.commentCreator._id)
-                        }>
+                      <p className="text-sm font-semibold">
                         {comment.commentCreator.name}
                       </p>
                       <p className="text-xs text-gray-500">
@@ -189,11 +175,7 @@ export default function Post({
             ) : (
               <>
                 <div key={comments[0]._id} className="flex items-start gap-2">
-                  <Avatar
-                    className="w-8 h-8 cursor-pointer"
-                    onClick={() =>
-                      handleUserProfile(comments[0].commentCreator._id)
-                    }>
+                  <Avatar className="w-8 h-8">
                     <AvatarImage
                       src={comments[0].commentCreator.photo}
                       alt={comments[0].commentCreator.name}
@@ -204,9 +186,7 @@ export default function Post({
                   </Avatar>
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <p
-                        className="text-sm font-semibold cursor-pointer"
-                        onClick={() => handleUserProfile(comments[0]._id)}>
+                      <p className="text-sm font-semibold">
                         {comments[0].commentCreator.name}
                       </p>
                       <p className="text-xs text-gray-500">
@@ -216,12 +196,14 @@ export default function Post({
                     <p className="text-sm">{comments[0].content}</p>
                   </div>
                 </div>
-                <Button
-                  variant="link"
-                  onClick={() => handleOpenPost(post.id)}
-                  className="mt-2 px-0">
-                  Show all comments
-                </Button>
+                {comments.length > 1 && (
+                  <Button
+                    variant="link"
+                    onClick={() => handleOpenPost(post.id)}
+                    className="mt-2 px-0">
+                    Show all comments
+                  </Button>
+                )}
               </>
             )}
           </div>
