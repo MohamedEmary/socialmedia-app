@@ -1,7 +1,7 @@
 "use client";
 import reduxStore from "@/lib/Redux/ReduxStore";
 import { useDispatch, useSelector } from "react-redux";
-import { Post as PostType } from "../../types/post.types";
+import { Post as PostType } from "../types/post.types";
 import { useEffect } from "react";
 import { getMyData, getMyPosts } from "@/lib/Redux/PostsSlice";
 import { PostSkeletonList } from "@/components/post-skeleton";
@@ -10,7 +10,7 @@ import AddPost from "@/components/add-post";
 import ProfileImage from "@/components/profile-image";
 import { myInfo } from "@/app/types/other.type";
 
-function Page({ params }) {
+export default function Page() {
   const dispatch = useDispatch<typeof reduxStore.dispatch>();
 
   const myPosts: PostType[] = useSelector(
@@ -22,10 +22,14 @@ function Page({ params }) {
   );
 
   useEffect(() => {
-    const id: string = params.id;
-    dispatch(getMyPosts({ id, limit: 30 }));
-    dispatch(getMyData());
-  }, []);
+    const fetchData = async () => {
+      await dispatch(getMyData());
+      const id = myInfo ? myInfo.user._id : "";
+      dispatch(getMyPosts({ id, limit: 30 }));
+    };
+
+    fetchData();
+  }, [dispatch, myInfo]);
 
   return (
     <>
@@ -50,5 +54,3 @@ function Page({ params }) {
     </>
   );
 }
-
-export default Page;
