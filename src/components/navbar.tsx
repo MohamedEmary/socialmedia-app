@@ -14,10 +14,25 @@ import {
 import Image from "next/image";
 import logo from "../assets/logo.png";
 import { ModeToggle } from "./ui/dark-toggle";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { myInfo } from "@/app/types/other.type";
+import reduxStore from "@/lib/Redux/ReduxStore";
+import { getMyData } from "@/lib/Redux/PostsSlice";
 
 export function Navbar() {
+  const dispatch = useDispatch<typeof reduxStore.dispatch>();
+
+  const myInfo: myInfo = useSelector(
+    (state: ReturnType<typeof reduxStore.getState>) => state.posts.myInfo
+  );
+
+  useEffect(() => {
+    dispatch(getMyData());
+  }, []);
+
   return (
-    <nav className="flex items-center justify-between fixed top-0 w-full z-10 px-4 py-2 border-b dark:bg-black bg-white">
+    <nav className="flex items-center justify-between md:fixed top-0 w-full z-10 px-4 py-2 border-b dark:bg-black bg-white">
       <div className="flex items-center space-x-4">
         <Link href="/" className="flex items-center space-x-2">
           <Image src={logo} alt="Yap Logo" width={40} height={40} />
@@ -30,7 +45,11 @@ export function Navbar() {
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="relative h-8 w-8 rounded-full">
               <Avatar className="h-8 w-8">
-                <AvatarImage src="/avatars/01.png" alt="@username" />
+                <AvatarImage
+                  src={myInfo ? myInfo.user.photo : ""}
+                  alt={myInfo ? myInfo.user.name : ""}
+                  className="object-cover"
+                />
                 <AvatarFallback>UN</AvatarFallback>
               </Avatar>
             </Button>
