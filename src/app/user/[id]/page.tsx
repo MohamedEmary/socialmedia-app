@@ -1,7 +1,7 @@
 "use client";
 import reduxStore from "@/lib/Redux/ReduxStore";
 import { useDispatch, useSelector } from "react-redux";
-import { Post as PostType } from "../types/post.types";
+import { Post as PostType } from "../../types/post.types";
 import { useEffect } from "react";
 import { getMyData, getMyPosts } from "@/lib/Redux/PostsSlice";
 import { PostSkeletonList } from "@/components/post-skeleton";
