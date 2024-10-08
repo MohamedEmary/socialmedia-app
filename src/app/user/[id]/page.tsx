@@ -21,11 +21,6 @@ function Page({ params }) {
     (state: ReturnType<typeof reduxStore.getState>) => state.posts.myInfo
   );
 
-  const handleImageChange = (file: File) => {
-    // Handle the image upload here
-    console.log("Uploading new profile image:", file.name);
-  };
-
   useEffect(() => {
     const id: string = params.id;
     dispatch(getMyPosts({ id, limit: 30 }));
@@ -37,8 +32,7 @@ function Page({ params }) {
       <div className="flex flex-col justify-center items-center py-4">
         <ProfileImage
           src={(myInfo && myInfo.user.photo) || ""}
-          alt="User's profile"
-          onImageChange={handleImageChange}
+          alt={(myInfo && myInfo.user.name) || ""}
         />
         <h1 className="mt-4 text-2xl font-bold">
           {myInfo && myInfo.user.name}
