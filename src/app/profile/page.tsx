@@ -5,7 +5,7 @@ import { Post as PostType } from "../types/post.types";
 import { useEffect } from "react";
 import { getMyData, getMyPosts } from "@/lib/Redux/PostsSlice";
 import { PostSkeletonList } from "@/components/post-skeleton";
-import Post from "@/components/post";
+import Post from "@/components/post/post";
 import AddPost from "@/components/add-post";
 import ProfileImage from "@/components/profile-image";
 import { myInfo } from "@/app/types/other.type";
@@ -46,7 +46,9 @@ export default function Page() {
       <AddPost />
       <div className="space-y-3">
         {myPosts ? (
-          myPosts.map((post) => <Post post={post} key={post.id} />)
+          myPosts.map((post) => (
+            <Post post={post} key={post.id} myPost={true} />
+          ))
         ) : (
           <PostSkeletonList />
         )}

@@ -1,6 +1,17 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx";
+import { useRouter } from "next/navigation";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
+}
+
+export function useHandleOpenPost() {
+  const router = useRouter();
+
+  const handleOpenPost = (postId: string) => {
+    router.push(`/post/${postId}`);
+  };
+
+  return handleOpenPost;
 }

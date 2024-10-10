@@ -1,6 +1,6 @@
 "use client";
 import { getPosts } from "@/lib/Redux/PostsSlice";
-import Post from "../components/post";
+import Post from "../components/post/post";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import reduxStore from "@/lib/Redux/ReduxStore";
