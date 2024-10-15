@@ -17,7 +17,7 @@ import { useDispatch } from "react-redux";
 import { signupData } from "../types/auth.types";
 import reduxStore from "@/lib/Redux/ReduxStore";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 export default function Page() {
@@ -61,7 +61,6 @@ export default function Page() {
 
   const dispatch = useDispatch<typeof reduxStore.dispatch>();
   const router = useRouter();
-  const { toast } = useToast();
 
   const initialValues: signupData = {
     email: "",

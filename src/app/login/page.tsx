@@ -17,7 +17,7 @@ import { useDispatch } from "react-redux";
 import { loginData } from "../types/auth.types";
 import reduxStore from "@/lib/Redux/ReduxStore";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 
 export default function Page() {
   const schema = yup.object().shape({
@@ -30,7 +30,6 @@ export default function Page() {
 
   const dispatch = useDispatch<typeof reduxStore.dispatch>();
   const router = useRouter();
-  const { toast } = useToast();
 
   const initialValues: loginData = {
     email: "",

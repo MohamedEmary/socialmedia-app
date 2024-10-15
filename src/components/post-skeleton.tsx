@@ -48,7 +48,7 @@ export function PostSkeleton({ commentCount = 1 }: { commentCount?: number }) {
 
 export function PostSkeletonList({ count = 3 }: { count?: number }) {
   return (
-    <div className="space-y-8">
+    <div className="space-y-3">
       {Array.from({ length: count }).map((_, index) => (
         <PostSkeleton key={index} />
       ))}
