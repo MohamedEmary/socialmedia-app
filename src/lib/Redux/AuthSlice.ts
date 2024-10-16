@@ -2,9 +2,16 @@ import { authState, loginData, signupData } from "@/app/types/auth.types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const getInitialToken = () => {
+  if (typeof window !== "undefined") {
+    return localStorage.getItem("token") || null;
+  }
+  return null;
+};
+
 const initialState: authState = {
   userData: null,
-  userToken: null,
+  userToken: getInitialToken(),
   isError: false,
   isLoading: false,
 };
