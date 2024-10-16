@@ -3,7 +3,7 @@ import { getPosts } from "@/lib/Redux/PostsSlice";
 import Post from "../components/post/post";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import reduxStore from "@/lib/Redux/ReduxStore";
+import reduxStore, { RootState } from "@/lib/Redux/ReduxStore";
 import { Post as PostType } from "./types/post.types";
 import { PostSkeletonList } from "@/components/post-skeleton";
 import AddPost from "../components/add-post";
@@ -11,13 +11,17 @@ import AddPost from "../components/add-post";
 export default function Page() {
   const dispatch = useDispatch<typeof reduxStore.dispatch>();
 
-  const allPosts: PostType[] = useSelector(
-    (state: ReturnType<typeof reduxStore.getState>) => state.posts.allPosts
+  const allPosts: PostType[] | null = useSelector(
+    (state: RootState) => state.posts.allPosts
   );
 
+  const token = useSelector((state: RootState) => state.auth.userToken);
+
   useEffect(() => {
-    dispatch(getPosts(30));
-  }, []);
+    if (token) {
+      dispatch(getPosts(30));
+    }
+  }, [token, dispatch]);
 
   return (
     <>

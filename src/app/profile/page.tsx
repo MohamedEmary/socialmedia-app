@@ -1,5 +1,5 @@
 "use client";
-import reduxStore from "@/lib/Redux/ReduxStore";
+import reduxStore, { RootState } from "@/lib/Redux/ReduxStore";
 import { useDispatch, useSelector } from "react-redux";
 import { Post as PostType } from "../types/post.types";
 import { useEffect } from "react";
@@ -8,28 +8,31 @@ import { PostSkeletonList } from "@/components/post-skeleton";
 import Post from "@/components/post/post";
 import AddPost from "@/components/add-post";
 import ProfileImage from "@/components/profile-image";
-import { myInfo } from "@/app/types/other.type";
 
 export default function Page() {
   const dispatch = useDispatch<typeof reduxStore.dispatch>();
 
-  const myPosts: PostType[] = useSelector(
-    (state: ReturnType<typeof reduxStore.getState>) => state.posts.myPosts
+  const myPosts: PostType[] | null = useSelector(
+    (state: RootState) => state.posts.myPosts
   );
 
-  const myInfo: myInfo = useSelector(
-    (state: ReturnType<typeof reduxStore.getState>) => state.posts.myInfo
-  );
+  const myInfo = useSelector((state: RootState) => state.posts.myInfo);
+
+  const id: string =
+    useSelector((state: RootState) => state.posts.myInfo?.user._id) || "";
+
+  const token = useSelector((state: RootState) => state.auth.userToken);
 
   useEffect(() => {
     const fetchData = async () => {
-      await dispatch(getMyData());
-      const id = myInfo ? myInfo.user._id : "";
-      dispatch(getMyPosts({ id, limit: 30 }));
+      if (token) {
+        await dispatch(getMyData());
+        dispatch(getMyPosts({ id, limit: 30 }));
+      }
     };
 
     fetchData();
-  }, [dispatch, myInfo]);
+  }, [dispatch, token, id]);
 
   return (
     <>

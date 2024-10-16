@@ -16,20 +16,22 @@ import logo from "../assets/logo.png";
 import { ModeToggle } from "./ui/dark-toggle";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { myInfo } from "@/app/types/other.type";
-import reduxStore from "@/lib/Redux/ReduxStore";
+import reduxStore, { RootState } from "@/lib/Redux/ReduxStore";
 import { getMyData } from "@/lib/Redux/PostsSlice";
 
 export function Navbar() {
   const dispatch = useDispatch<typeof reduxStore.dispatch>();
+  const token = useSelector((state: RootState) => state.auth.userToken);
 
   const myInfo: myInfo = useSelector(
     (state: ReturnType<typeof reduxStore.getState>) => state.posts.myInfo
   );
 
   useEffect(() => {
+    if (token) {
     dispatch(getMyData());
-  }, []);
+    }
+  }, [token, dispatch]);
 
   return (
     <nav className="flex items-center justify-between md:fixed top-0 w-full z-10 px-4 py-2 border-b dark:bg-black bg-white">
