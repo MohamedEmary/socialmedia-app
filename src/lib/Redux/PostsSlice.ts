@@ -8,6 +8,7 @@ import {
   Post as PostType,
 } from "@/app/types/post.types";
 import { myInfo } from "@/app/types/other.type";
+import { RootState } from "./ReduxStore";
 
 interface InitialState {
   allPosts: null | PostType[];
@@ -34,11 +35,10 @@ interface getMyPostsArgs {
   limit?: number;
 }
 
-const token: string | null = localStorage.getItem("token");
-
 export const getSinglePost = createAsyncThunk(
   "posts/getSinglePost",
-  (id: string) => {
+  async (id: string, { getState }) => {
+    const token = (getState() as RootState).auth.userToken;
     const config = {
       url: `https://linked-posts.routemisr.com/posts/${id}`,
       headers: {
@@ -55,25 +55,30 @@ export const getSinglePost = createAsyncThunk(
   }
 );
 
-export const getMyData = createAsyncThunk("posts/getMyData", () => {
-  const config = {
-    url: `https://linked-posts.routemisr.com/users/profile-data`,
-    headers: {
-      token: token,
-    },
-  };
+export const getMyData = createAsyncThunk(
+  "posts/getMyData",
+  async (_, { getState }) => {
+    const token = (getState() as RootState).auth.userToken;
+    const config = {
+      url: `https://linked-posts.routemisr.com/users/profile-data`,
+      headers: {
+        token: token,
+      },
+    };
 
-  return axios
-    .request(config)
-    .then((response) => response.data as myInfo)
-    .catch((error) => {
-      throw error;
-    });
-});
+    return axios
+      .request(config)
+      .then((response) => response.data as myInfo)
+      .catch((error) => {
+        throw error;
+      });
+  }
+);
 
 export const getMyPosts = createAsyncThunk(
   "posts/getMyPosts",
-  ({ id, limit = 25 }: getMyPostsArgs) => {
+  async ({ id, limit = 25 }: getMyPostsArgs, { getState }) => {
+    const token = (getState() as RootState).auth.userToken;
     const config = {
       url: `https://linked-posts.routemisr.com/users/${id}/posts?limit=${limit}`,
       headers: {
@@ -92,7 +97,8 @@ export const getMyPosts = createAsyncThunk(
 
 export const getPosts = createAsyncThunk(
   "posts/getPosts",
-  (limit: number = 25) => {
+  async (limit: number = 25, { getState }) => {
+    const token = (getState() as RootState).auth.userToken;
     const config = {
       url: `https://linked-posts.routemisr.com/posts?limit=${limit}`,
       headers: {
@@ -111,7 +117,8 @@ export const getPosts = createAsyncThunk(
 
 export const addComment = createAsyncThunk(
   "posts/addComment",
-  (data: CommentRequest) => {
+  async (data: CommentRequest, { getState }) => {
+    const token = (getState() as RootState).auth.userToken;
     const config = {
       method: "post",
       url: "https://linked-posts.routemisr.com/comments",
