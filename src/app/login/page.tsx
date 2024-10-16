@@ -1,7 +1,7 @@
 "use client";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { AtSign, Lock, LogIn } from "lucide-react";
+import { AtSign, Lock, LogIn, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -34,6 +34,17 @@ export default function Page() {
   const initialValues: loginData = {
     email: "",
     password: "",
+  };
+
+  const handleDemoLogin = async () => {
+    await formik.setValues(
+      {
+        email: "za3bolaa@gmail.com",
+        password: "Za3bola@1234",
+      },
+      false // Do not validate fields
+    );
+    formik.submitForm();
   };
 
   const formik = useFormik({
@@ -109,10 +120,18 @@ export default function Page() {
             </div>
           </div>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="space-x-2">
           <Button type="submit" className="w-full" variant="outline">
             <LogIn className="mr-2 h-4 w-4" />
             Login
+          </Button>
+          <Button
+            type="button"
+            onClick={handleDemoLogin}
+            className="w-full"
+            variant="outline">
+            <User className="mr-2 h-4 w-4" />
+            Demo Login
           </Button>
         </CardFooter>
       </form>
