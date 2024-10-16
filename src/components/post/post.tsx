@@ -8,6 +8,8 @@ import PostContent from "./post-content";
 import CommentSection from "./comment-section";
 import axios from "axios";
 import { toast } from "@/hooks/use-toast";
+import { RootState } from "@/lib/Redux/ReduxStore";
+import { useSelector } from "react-redux";
 
 interface PostProps {
   post: PostType;
@@ -23,6 +25,7 @@ export default function Post({
   const [editingPost, setEditingPost] = useState(false);
   const [postBody, setPostBody] = useState(post.body);
   const [postImage, setPostImage] = useState(post.image);
+  const token = useSelector((state: RootState) => state.auth.userToken);
 
   const handleUpdatePost = (updatedBody: string, updatedImage: File | null) => {
     const data = new FormData();
@@ -36,7 +39,7 @@ export default function Post({
       maxBodyLength: Infinity,
       url: `https://linked-posts.routemisr.com/posts/${post.id}`,
       headers: {
-        token: localStorage.getItem("token"),
+        token: token,
       },
       data: data,
     };
