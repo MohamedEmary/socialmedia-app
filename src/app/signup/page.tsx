@@ -1,7 +1,7 @@
 "use client";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { AtSign, Lock, User, Calendar, Users } from "lucide-react";
+import { AtSign, Lock, User, Calendar, UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -23,7 +23,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 export default function Page() {
   const minDate = new Date();
   minDate.setFullYear(minDate.getFullYear() - 13);
-  // console.log(minDate);
 
   const formattedMinDate = minDate.toISOString().split("T")[0];
 
@@ -102,7 +101,7 @@ export default function Page() {
   return (
     <Card className="w-[350px] mx-auto">
       <CardHeader>
-        <CardTitle className="text-2xl">Register Now:</CardTitle>
+        <CardTitle className="text-2xl">Sign Up Now:</CardTitle>
       </CardHeader>
       <form onSubmit={formik.handleSubmit}>
         <CardContent>
@@ -250,7 +249,7 @@ export default function Page() {
         </CardContent>
         <CardFooter>
           <Button type="submit" className="w-full" variant="outline">
-            <Users className="mr-2 h-4 w-4" />
+            <UserPlus className="mr-2 h-4 w-4" />
             Register
           </Button>
         </CardFooter>
