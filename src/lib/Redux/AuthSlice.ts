@@ -63,6 +63,7 @@ const authSlice = createSlice({
     clearUserData: (prev) => {
       prev.userData = null;
       prev.userToken = null;
+      localStorage.removeItem("token");
     },
   },
 
@@ -99,4 +100,5 @@ const authSlice = createSlice({
   },
 });
 
+export const { clearUserData } = authSlice.actions;
 export default authSlice.reducer;
