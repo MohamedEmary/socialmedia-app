@@ -10,3 +10,4 @@ const reduxStore = configureStore({
 });
 
 export default reduxStore;
+export type RootState = ReturnType<typeof reduxStore.getState>;
