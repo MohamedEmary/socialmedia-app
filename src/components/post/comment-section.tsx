@@ -42,9 +42,7 @@ export default function CommentSection({
   const [commentBeingEdited, setCommentBeingEdited] = useState<string | null>(
     null
   );
-  const [token, setToken] = useState<string | null>(
-    localStorage.getItem("token")
-  );
+  const [token] = useState<string | null>(localStorage.getItem("token"));
   const dispatch = useDispatch<typeof reduxStore.dispatch>();
   const handleOpenPost = useHandleOpenPost();
 
@@ -88,7 +86,7 @@ export default function CommentSection({
             description: "Comment updated successfully",
             variant: "success",
           });
-          const updatedComments = comments.map(comment =>
+          const updatedComments = comments.map((comment) =>
             comment._id === commentId
               ? { ...comment, content: commentBeingEdited }
               : comment
