@@ -11,9 +11,10 @@ import {
 import { useHandleOpenPost } from "@/lib/utils";
 import axios from "axios";
 import { toast } from "@/hooks/use-toast";
+import { User } from "@/app/types/post.types";
 
 interface PostHeaderProps {
-  user: { name: string; photo: string };
+  user: User;
   createdAt: string;
   postId: string;
   myPost: boolean;
@@ -70,11 +71,11 @@ export default function PostHeader({
     <CardHeader className="flex flex-row items-center gap-4">
       <Avatar>
         <AvatarImage
-          src={user.photo}
-          alt={user.name}
+          src={user.photo || ""}
+          alt={user.name || ""}
           className="object-cover"
         />
-        <AvatarFallback>{user.name[0]}</AvatarFallback>
+        <AvatarFallback>{user.name?.[0] || ""}</AvatarFallback>
       </Avatar>
       <div className="flex-1">
         <h2 className="text-lg font-semibold">{user.name}</h2>
