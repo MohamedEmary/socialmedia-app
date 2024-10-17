@@ -70,13 +70,13 @@ export default function Post({
     <Card className="w-full max-w-2xl mx-auto">
       <PostHeader
         user={post.user}
-        createdAt={post.createdAt}
-        postId={post.id}
+        createdAt={post.createdAt || ""}
+        postId={post.id || ""}
         myPost={myPost}
         onEdit={() => setEditingPost(true)}
       />
       <PostContent
-        body={postBody}
+        body={postBody || ""}
         image={postImage}
         editing={editingPost}
         onSave={handleUpdatePost}
@@ -85,7 +85,7 @@ export default function Post({
       <CommentSection
         commentsArr={post.comments}
         showAllComments={showAllComments}
-        postId={post.id}
+        postId={post.id || ""}
         myPost={myPost}
       />
     </Card>
