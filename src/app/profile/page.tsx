@@ -2,7 +2,7 @@
 import reduxStore, { RootState } from "@/lib/Redux/ReduxStore";
 import { useDispatch, useSelector } from "react-redux";
 import { Post as PostType } from "../types/post.types";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getMyData, getMyPosts } from "@/lib/Redux/PostsSlice";
 import { PostSkeletonList } from "@/components/post-skeleton";
 import Post from "@/components/post/post";
@@ -22,6 +22,7 @@ export default function Page() {
     useSelector((state: RootState) => state.posts.myInfo?.user._id) || "";
 
   const token = useSelector((state: RootState) => state.auth.userToken);
+  const [postsChanged, setPostsChanged] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,9 +31,12 @@ export default function Page() {
         dispatch(getMyPosts({ id, limit: 30 }));
       }
     };
-
     fetchData();
-  }, [dispatch, token, id]);
+  }, [dispatch, token, id, postsChanged]);
+
+  const handlePostsChanged = () => {
+    setPostsChanged((prev) => !prev);
+  };
 
   return (
     <>
@@ -46,7 +50,7 @@ export default function Page() {
         </h1>
       </div>
 
-      <AddPost />
+      <AddPost onNewPostAdded={handlePostsChanged} />
       <div className="space-y-3">
         {myPosts ? (
           myPosts.map((post) => (

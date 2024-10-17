@@ -11,7 +11,11 @@ import Image from "next/image";
 import axios from "axios";
 import { toast } from "@/hooks/use-toast";
 
-export default function AddPost() {
+interface AddPostProps {
+  onNewPostAdded: () => void;
+}
+
+export default function AddPost({ onNewPostAdded }: AddPostProps) {
   const [postText, setBody] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -61,6 +65,7 @@ export default function AddPost() {
               variant: "success",
               description: "Your post has been created successfully.",
             });
+            onNewPostAdded();
           }
         })
         .catch(() => {
