@@ -54,7 +54,7 @@ export default function CommentSection({
       };
 
       dispatch(addComment(comment)).then((res) => {
-        const payload: CommentResponse = res.payload;
+        const payload: CommentResponse = res.payload as CommentResponse;
         if (payload.message === "success") {
           setComments(payload.comments);
         }
