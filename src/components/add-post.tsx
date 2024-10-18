@@ -12,7 +12,7 @@ import axios from "axios";
 import { toast } from "@/hooks/use-toast";
 
 interface AddPostProps {
-  onNewPostAdded: () => void;
+  onNewPostAdded?: () => void;
 }
 
 export default function AddPost({ onNewPostAdded }: AddPostProps) {
