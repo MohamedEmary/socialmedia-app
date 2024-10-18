@@ -65,7 +65,9 @@ export default function AddPost({ onNewPostAdded }: AddPostProps) {
               variant: "success",
               description: "Your post has been created successfully.",
             });
-            onNewPostAdded();
+            if (onNewPostAdded) {
+              onNewPostAdded();
+            }
           }
         })
         .catch(() => {
