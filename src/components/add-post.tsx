@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -19,7 +19,11 @@ export default function AddPost({ onNewPostAdded }: AddPostProps) {
   const [postText, setBody] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const token: string | null = localStorage.getItem("token");
+  let token: string | null = null;
+
+  if (typeof window !== "undefined") {
+    token = localStorage.getItem("token");
+  }
 
   const handleBodyChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setBody(e.target.value);

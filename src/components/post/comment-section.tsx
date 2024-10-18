@@ -42,7 +42,9 @@ export default function CommentSection({
   const [commentBeingEdited, setCommentBeingEdited] = useState<string | null>(
     null
   );
-  const [token] = useState<string | null>(localStorage.getItem("token"));
+  const [token] = useState<string | null>(
+    typeof window !== "undefined" ? localStorage.getItem("token") : null
+  );
   const dispatch = useDispatch<typeof reduxStore.dispatch>();
   const handleOpenPost = useHandleOpenPost();
 
@@ -54,7 +56,7 @@ export default function CommentSection({
       };
 
       dispatch(addComment(comment)).then((res) => {
-        const payload: CommentResponse = res.payload;
+        const payload: CommentResponse = res.payload as CommentResponse;
         if (payload.message === "success") {
           setComments(payload.comments);
         }

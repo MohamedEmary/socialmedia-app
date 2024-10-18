@@ -43,7 +43,8 @@ export default function PostHeader({
       method: "delete",
       url: `https://linked-posts.routemisr.com/posts/${postId}`,
       headers: {
-        token: localStorage.getItem("token"),
+        token:
+          typeof window !== "undefined" ? localStorage.getItem("token") : null,
       },
     };
 
