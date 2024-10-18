@@ -187,11 +187,11 @@ export default function CommentSection({
             <div key={comment._id} className="flex items-start gap-2">
               <Avatar className="w-8 h-8">
                 <AvatarImage
-                  src={comment.commentCreator.photo}
-                  alt={comment.commentCreator.name}
+                  src={comment.commentCreator.photo || ""}
+                  alt={comment.commentCreator.name || ""}
                 />
                 <AvatarFallback>
-                  {comment.commentCreator.name[0]}
+                  {comment.commentCreator.name?.[0]}
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1">
@@ -200,13 +200,13 @@ export default function CommentSection({
                     {comment.commentCreator.name}
                   </p>
                   <p className="text-xs text-gray-500">
-                    {formatDate(comment.createdAt)}
+                    {formatDate(comment.createdAt || "")}
                   </p>
                 </div>
                 {editingCommentId === comment._id ? (
                   <div className="mt-1 space-y-2">
                     <Input
-                      value={commentBeingEdited}
+                      value={commentBeingEdited || ""}
                       onChange={(e) => setCommentBeingEdited(e.target.value)}
                       className="w-full"
                     />
@@ -219,7 +219,7 @@ export default function CommentSection({
                       </Button>
                       <Button
                         onClick={() => {
-                          handleUpdateComment(comment._id);
+                          handleUpdateComment(comment._id || "");
                           setEditingCommentId(null);
                         }}
                         size="sm">
@@ -248,7 +248,7 @@ export default function CommentSection({
                       Edit
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                      onClick={() => handleDeleteComment(comment._id)}>
+                      onClick={() => handleDeleteComment(comment._id || "")}>
                       Delete
                     </DropdownMenuItem>
                   </DropdownMenuContent>
