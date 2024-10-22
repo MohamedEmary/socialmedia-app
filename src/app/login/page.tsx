@@ -1,7 +1,8 @@
 "use client";
+import { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { AtSign, Lock, LogIn, User } from "lucide-react";
+import { AtSign, Lock, LogIn, User, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -20,6 +21,8 @@ import { useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
 
 export default function Page() {
+  const [isLoading, setIsLoading] = useState(false);
+
   const schema = yup.object().shape({
     email: yup
       .string()
@@ -36,33 +39,36 @@ export default function Page() {
     password: "",
   };
 
+  const handleLogin = (values: loginData) => {
+    setIsLoading(true);
+    dispatch(login(values)).then((msg) => {
+      const message: string = msg.payload.message;
+      setIsLoading(false);
+      if (message === "success") {
+        router.push("/");
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "incorrect email or password",
+        });
+      }
+    });
+  };
+
   const handleDemoLogin = async () => {
-    await formik.setValues(
-      {
-        email: "za3bolaa@gmail.com",
-        password: "Za3bola@1234",
-      },
-      false // Do not validate fields
-    );
-    formik.submitForm();
+    const values: loginData = {
+      email: "za3bolaa@gmail.com",
+      password: "Za3bola@1234",
+    };
+    handleLogin(values);
   };
 
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: schema,
-    onSubmit: (values: loginData) => {
-      dispatch(login(values)).then((msg) => {
-        const message: string = msg.payload.message;
-        if (message === "success") {
-          router.push("/");
-        } else {
-          toast({
-            variant: "destructive",
-            title: "Error",
-            description: "incorrect email or password",
-          });
-        }
-      });
+    onSubmit: (values) => {
+      handleLogin(values);
     },
   });
 
@@ -88,7 +94,6 @@ export default function Page() {
                   onChange={formik.handleChange}
                   value={formik.values.email}
                   className="pl-8"
-                  // required
                 />
               </div>
               {formik.errors.email && formik.touched.email && (
@@ -109,7 +114,6 @@ export default function Page() {
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
                   value={formik.values.password}
-                  // required
                 />
               </div>
               {formik.errors.password && formik.touched.password && (
@@ -121,17 +125,32 @@ export default function Page() {
           </div>
         </CardContent>
         <CardFooter className="space-x-2">
-          <Button type="submit" className="w-full" variant="outline">
-            <LogIn className="mr-2 h-4 w-4" />
-            Login
+          <Button
+            type="submit"
+            className="w-full"
+            variant="outline"
+            disabled={isLoading}>
+            {isLoading ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <>
+                <LogIn className="mr-2 h-4 w-4" /> Login
+              </>
+            )}
           </Button>
           <Button
             type="button"
             onClick={handleDemoLogin}
             className="w-full"
-            variant="outline">
-            <User className="mr-2 h-4 w-4" />
-            Demo Login
+            variant="outline"
+            disabled={isLoading}>
+            {isLoading ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <>
+                <User className="mr-2 h-4 w-4" /> Demo Login
+              </>
+            )}
           </Button>
         </CardFooter>
       </form>
