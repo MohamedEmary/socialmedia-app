@@ -15,12 +15,14 @@ interface PostProps {
   post: PostType;
   showAllComments?: boolean;
   myPost?: boolean;
+  onPostDeleted: () => void;
 }
 
 export default function Post({
   post,
   showAllComments = false,
   myPost = false,
+  onPostDeleted,
 }: PostProps) {
   const [editingPost, setEditingPost] = useState(false);
   const [postBody, setPostBody] = useState(post.body);
@@ -74,6 +76,7 @@ export default function Post({
         postId={post.id || ""}
         myPost={myPost}
         onEdit={() => setEditingPost(true)}
+        onDelete={onPostDeleted}
       />
       <PostContent
         body={postBody || ""}

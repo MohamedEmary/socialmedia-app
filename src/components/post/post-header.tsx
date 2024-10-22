@@ -19,6 +19,7 @@ interface PostHeaderProps {
   postId: string;
   myPost: boolean;
   onEdit: () => void;
+  onDelete: () => void;
 }
 
 export default function PostHeader({
@@ -27,6 +28,7 @@ export default function PostHeader({
   postId,
   myPost,
   onEdit,
+  onDelete,
 }: PostHeaderProps) {
   const handleOpenPost = useHandleOpenPost();
   const formatDate = (dateString: string) => {
@@ -57,6 +59,7 @@ export default function PostHeader({
             description: "Post deleted successfully",
             variant: "success",
           });
+          onDelete();
         }
       })
       .catch(() => {

@@ -64,7 +64,7 @@ export default function Page() {
       <div className="space-y-3">
         {myPosts ? (
           myPosts.map((post) => (
-            <Post post={post} key={post.id} myPost={true} />
+            <Post post={post} key={post.id} myPost={true} onPostDeleted={handlePostsChanged} />
           ))
         ) : (
           <PostSkeletonList />
