@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { AtSign, Lock, LogIn, User, Loader2 } from "lucide-react";
@@ -14,9 +14,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { login } from "@/lib/Redux/AuthSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginData } from "../types/auth.types";
-import reduxStore from "@/lib/Redux/ReduxStore";
+import reduxStore, { RootState } from "@/lib/Redux/ReduxStore";
 import { useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
 
@@ -71,6 +71,14 @@ export default function Page() {
       handleLogin(values);
     },
   });
+
+  const isAuth = useSelector((state: RootState) => state.auth.isAuth);
+
+  useEffect(() => {
+    if (isAuth) {
+      router.replace("/");
+    }
+  }, [isAuth, router]);
 
   return (
     <Card className="w-[350px] mx-auto">

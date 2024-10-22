@@ -8,6 +8,7 @@ import { PostSkeletonList } from "@/components/post-skeleton";
 import Post from "@/components/post/post";
 import AddPost from "@/components/add-post";
 import ProfileImage from "@/components/profile-image";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const dispatch = useDispatch<typeof reduxStore.dispatch>();
@@ -23,6 +24,15 @@ export default function Page() {
 
   const token = useSelector((state: RootState) => state.auth.userToken);
   const [postsChanged, setPostsChanged] = useState(false);
+
+  const isAuth = useSelector((state: RootState) => state.auth.isAuth);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isAuth) {
+      router.replace("/login");
+    }
+  }, [isAuth, router]);
 
   useEffect(() => {
     const fetchData = async () => {

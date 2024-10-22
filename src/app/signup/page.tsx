@@ -13,12 +13,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signup } from "@/lib/Redux/AuthSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signupData } from "../types/auth.types";
-import reduxStore from "@/lib/Redux/ReduxStore";
+import reduxStore, { RootState } from "@/lib/Redux/ReduxStore";
 import { useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useEffect } from "react";
 
 export default function Page() {
   const minDate = new Date();
@@ -97,6 +98,14 @@ export default function Page() {
       });
     },
   });
+
+  const isAuth = useSelector((state: RootState) => state.auth.isAuth);
+
+  useEffect(() => {
+    if (isAuth) {
+      router.replace("/");
+    }
+  }, [isAuth, router]);
 
   return (
     <Card className="w-[350px] mx-auto">

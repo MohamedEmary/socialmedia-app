@@ -6,6 +6,7 @@ import { getSinglePost } from "@/lib/Redux/PostsSlice";
 import reduxStore, { RootState } from "@/lib/Redux/ReduxStore";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 function Page({ params: { id } }: { params: { id: string } }) {
   const dispatch = useDispatch<typeof reduxStore.dispatch>();
@@ -14,9 +15,16 @@ function Page({ params: { id } }: { params: { id: string } }) {
     (state: RootState) => state.posts.singlePost
   );
 
+  const isAuth = useSelector((state: RootState) => state.auth.isAuth);
+  const router = useRouter();
+
   useEffect(() => {
-    dispatch(getSinglePost(id));
-  }, [dispatch, id]);
+    if (!isAuth) {
+      router.replace("/login");
+    } else {
+      dispatch(getSinglePost(id));
+    }
+  }, [dispatch, id, isAuth, router]);
 
   return (
     <>
