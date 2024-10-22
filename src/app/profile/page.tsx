@@ -20,7 +20,7 @@ export default function Page() {
   const myInfo = useSelector((state: RootState) => state.posts.myInfo);
 
   const id: string =
-    useSelector((state: RootState) => state.posts.myInfo?.user._id) || "";
+    useSelector((state: RootState) => state.posts.myId) || "";
 
   const token = useSelector((state: RootState) => state.auth.userToken);
   const [postsChanged, setPostsChanged] = useState(false);
@@ -64,7 +64,7 @@ export default function Page() {
       <div className="space-y-3">
         {myPosts ? (
           myPosts.map((post) => (
-            <Post post={post} key={post.id} myPost={true} onPostDeleted={handlePostsChanged} />
+            <Post post={post} key={post.id} onPostDeleted={handlePostsChanged} />
           ))
         ) : (
           <PostSkeletonList />

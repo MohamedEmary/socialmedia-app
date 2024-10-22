@@ -16,8 +16,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useDispatch } from "react-redux";
-import reduxStore from "@/lib/Redux/ReduxStore";
+import { useDispatch, useSelector } from "react-redux";
+import reduxStore, { RootState } from "@/lib/Redux/ReduxStore";
 import { addComment } from "@/lib/Redux/PostsSlice";
 import { useHandleOpenPost } from "@/lib/utils";
 import axios from "axios";
@@ -27,14 +27,12 @@ interface CommentSectionProps {
   commentsArr: CommentType[];
   showAllComments: boolean;
   postId: string;
-  myPost: boolean;
 }
 
 export default function CommentSection({
   commentsArr,
   showAllComments,
   postId,
-  myPost,
 }: CommentSectionProps) {
   const [comments, setComments] = useState<Comment[]>(commentsArr);
   const [newComment, setNewComment] = useState<string>("");
@@ -47,6 +45,8 @@ export default function CommentSection({
   );
   const dispatch = useDispatch<typeof reduxStore.dispatch>();
   const handleOpenPost = useHandleOpenPost();
+
+  const myId = useSelector((state: RootState) => state.posts.myId);
 
   const handleAddComment = () => {
     if (newComment.trim()) {
@@ -233,7 +233,7 @@ export default function CommentSection({
                   <p className="text-sm">{comment.content}</p>
                 )}
               </div>
-              {myPost && (
+              {comment.commentCreator._id === myId && (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="icon">

@@ -14,14 +14,12 @@ import { useSelector } from "react-redux";
 interface PostProps {
   post: PostType;
   showAllComments?: boolean;
-  myPost?: boolean;
-  onPostDeleted: () => void;
+  onPostDeleted?: () => void;
 }
 
 export default function Post({
   post,
   showAllComments = false,
-  myPost = false,
   onPostDeleted,
 }: PostProps) {
   const [editingPost, setEditingPost] = useState(false);
@@ -74,9 +72,8 @@ export default function Post({
         user={post.user}
         createdAt={post.createdAt || ""}
         postId={post.id || ""}
-        myPost={myPost}
         onEdit={() => setEditingPost(true)}
-        onDelete={onPostDeleted}
+        onDelete={onPostDeleted || (() => {})}
       />
       <PostContent
         body={postBody || ""}
@@ -89,7 +86,6 @@ export default function Post({
         commentsArr={post.comments}
         showAllComments={showAllComments}
         postId={post.id || ""}
-        myPost={myPost}
       />
     </Card>
   );
