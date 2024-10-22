@@ -23,7 +23,7 @@ import { clearUserData } from "@/lib/Redux/AuthSlice";
 
 export function Navbar() {
   const dispatch = useDispatch<typeof reduxStore.dispatch>();
-  const token = useSelector((state: RootState) => state.auth.userToken);
+  const isAuth = useSelector((state: RootState) => state.auth.isAuth);
   const myInfo = useSelector((state: RootState) => state.posts.myInfo);
 
   const currentPath = usePathname();
@@ -33,10 +33,10 @@ export function Navbar() {
   };
 
   useEffect(() => {
-    if (token) {
+    if (isAuth) {
       dispatch(getMyData());
     }
-  }, [token, dispatch]);
+  }, [isAuth, dispatch]);
 
   return (
     <nav className="flex items-center justify-between md:fixed top-0 w-full z-10 px-4 py-2 border-b dark:bg-black bg-white">
@@ -48,7 +48,7 @@ export function Navbar() {
       </div>
       <div className="flex items-center space-x-4">
         <ModeToggle />
-        {token ? (
+        {isAuth ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button

@@ -1,6 +1,7 @@
 export interface authState {
   userData: null | string;
   userToken: null | string;
+  isAuth: boolean;
   isError: boolean;
   isLoading: boolean;
 }

@@ -7,6 +7,7 @@ import reduxStore, { RootState } from "@/lib/Redux/ReduxStore";
 import { Post as PostType } from "./types/post.types";
 import { PostSkeletonList } from "@/components/post-skeleton";
 import AddPost from "../components/add-post";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const dispatch = useDispatch<typeof reduxStore.dispatch>();
@@ -17,11 +18,16 @@ export default function Page() {
 
   const token = useSelector((state: RootState) => state.auth.userToken);
 
+  const isAuth = useSelector((state: RootState) => state.auth.isAuth);
+  const router = useRouter();
+
   useEffect(() => {
-    if (token) {
+    if (!isAuth) {
+      router.replace("/login");
+    } else if (token) {
       dispatch(getPosts(30));
     }
-  }, [token, dispatch]);
+  }, [isAuth, router, token, dispatch]);
 
   return (
     <>

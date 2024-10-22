@@ -9,9 +9,19 @@ const getInitialToken = () => {
   return null;
 };
 
+const getInitialAuth = () => {
+  if (typeof window !== "undefined") {
+    if (localStorage.getItem("token") !== null) {
+      return true;
+    }
+  }
+  return false;
+};
+
 const initialState: authState = {
   userData: null,
   userToken: getInitialToken(),
+  isAuth: getInitialAuth(),
   isError: false,
   isLoading: false,
 };
@@ -63,6 +73,7 @@ const authSlice = createSlice({
     clearUserData: (prev) => {
       prev.userData = null;
       prev.userToken = null;
+      prev.isAuth = false;
       if (typeof window !== "undefined") {
         localStorage.removeItem("token");
       }
@@ -77,6 +88,7 @@ const authSlice = createSlice({
       if (typeof window !== "undefined") {
         localStorage.setItem("token", action.payload.token);
       }
+      state.isAuth = true;
     });
     builder.addCase(login.pending, (state) => {
       state.isError = false;
