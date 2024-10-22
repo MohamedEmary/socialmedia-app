@@ -63,7 +63,9 @@ const authSlice = createSlice({
     clearUserData: (prev) => {
       prev.userData = null;
       prev.userToken = null;
-      localStorage.removeItem("token");
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("token");
+      }
     },
   },
 
@@ -72,7 +74,9 @@ const authSlice = createSlice({
       state.isError = false;
       state.isLoading = false;
       state.userToken = action.payload.token;
-      localStorage.setItem("token", action.payload.token);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("token", action.payload.token);
+      }
     });
     builder.addCase(login.pending, (state) => {
       state.isError = false;

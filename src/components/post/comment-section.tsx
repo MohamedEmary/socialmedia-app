@@ -42,7 +42,9 @@ export default function CommentSection({
   const [commentBeingEdited, setCommentBeingEdited] = useState<string | null>(
     null
   );
-  const [token] = useState<string | null>(localStorage.getItem("token"));
+  const [token] = useState<string | null>(
+    typeof window !== "undefined" ? localStorage.getItem("token") : null
+  );
   const dispatch = useDispatch<typeof reduxStore.dispatch>();
   const handleOpenPost = useHandleOpenPost();
 

@@ -27,7 +27,8 @@ export default function ProfileImage({ src, alt }: ProfileImageProps) {
       method: "put",
       url: "https://linked-posts.routemisr.com/users/upload-photo",
       headers: {
-        token: localStorage.getItem("token"),
+        token:
+          typeof window !== "undefined" ? localStorage.getItem("token") : null,
       },
       data: data,
     };
