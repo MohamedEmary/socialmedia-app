@@ -12,21 +12,23 @@ import { useHandleOpenPost } from "@/lib/utils";
 import axios from "axios";
 import { toast } from "@/hooks/use-toast";
 import { User } from "@/app/types/post.types";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/Redux/ReduxStore";
 
 interface PostHeaderProps {
   user: User;
   createdAt: string;
   postId: string;
-  myPost: boolean;
   onEdit: () => void;
+  onDelete: () => void;
 }
 
 export default function PostHeader({
   user,
   createdAt,
   postId,
-  myPost,
   onEdit,
+  onDelete,
 }: PostHeaderProps) {
   const handleOpenPost = useHandleOpenPost();
   const formatDate = (dateString: string) => {
@@ -37,6 +39,8 @@ export default function PostHeader({
       day: "numeric",
     });
   };
+
+  const myId = useSelector((state: RootState) => state.posts.myId);
 
   const handleRemovePost = () => {
     const config = {
@@ -57,6 +61,7 @@ export default function PostHeader({
             description: "Post deleted successfully",
             variant: "success",
           });
+          onDelete();
         }
       })
       .catch(() => {
@@ -87,7 +92,7 @@ export default function PostHeader({
         </p>
       </div>
       <div className="flex items-center gap-2">
-        {myPost && (
+        {user._id === myId && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon">

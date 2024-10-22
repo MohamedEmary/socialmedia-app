@@ -18,6 +18,7 @@ interface InitialState {
   postComments: null | Comment[];
   singlePost: null | PostType;
   myInfo: null | myInfo;
+  myId: null | string;
 }
 
 const initialState: InitialState = {
@@ -28,6 +29,7 @@ const initialState: InitialState = {
   postComments: null,
   singlePost: null,
   myInfo: null,
+  myId: null,
 };
 
 interface getMyPostsArgs {
@@ -208,6 +210,7 @@ const postsSlice = createSlice({
 
     builder.addCase(getMyData.fulfilled, (state, action) => {
       state.myInfo = action.payload;
+      state.myId = action.payload.user._id;
       state.isError = false;
       state.isLoading = false;
     });
