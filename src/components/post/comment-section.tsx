@@ -27,12 +27,14 @@ interface CommentSectionProps {
   commentsArr: CommentType[];
   showAllComments: boolean;
   postId: string;
+  postCreatorId: string;
 }
 
 export default function CommentSection({
   commentsArr,
   showAllComments,
   postId,
+  postCreatorId,
 }: CommentSectionProps) {
   const [comments, setComments] = useState<Comment[]>(commentsArr);
   const [newComment, setNewComment] = useState<string>("");
@@ -249,10 +251,12 @@ export default function CommentSection({
                       }}>
                       Edit
                     </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => handleDeleteComment(comment._id || "")}>
-                      Delete
-                    </DropdownMenuItem>
+                    {postCreatorId === myId && (
+                      <DropdownMenuItem
+                        onClick={() => handleDeleteComment(comment._id || "")}>
+                        Delete
+                      </DropdownMenuItem>
+                    )}
                   </DropdownMenuContent>
                 </DropdownMenu>
               )}
