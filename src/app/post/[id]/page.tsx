@@ -22,10 +22,12 @@ function Page({ params: { id } }: { params: { id: string } }) {
     if (!isAuth) {
       router.replace("/login");
     } else {
-      dispatch(resetSinglePost());
+      if (post?.id !== id) {
+        dispatch(resetSinglePost());
+      }
       dispatch(getSinglePost(id));
     }
-  }, [dispatch, id, isAuth, router]);
+  }, [dispatch, id, isAuth, router, post?.id]);
 
   return (
     <>
