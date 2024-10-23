@@ -86,6 +86,7 @@ export default function Post({
         commentsArr={post.comments}
         showAllComments={showAllComments}
         postId={post.id || ""}
+        postCreatorId={post.user._id || ""}
       />
     </Card>
   );
