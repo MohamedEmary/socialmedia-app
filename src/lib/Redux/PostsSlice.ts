@@ -142,7 +142,11 @@ export const addComment = createAsyncThunk(
 const postsSlice = createSlice({
   name: "posts",
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    resetSinglePost: (state) => {
+      state.singlePost = null;
+    },
+  },
 
   extraReducers: (builder) => {
     builder.addCase(getPosts.fulfilled, (state, action) => {
@@ -225,4 +229,5 @@ const postsSlice = createSlice({
   },
 });
 
+export const { resetSinglePost } = postsSlice.actions;
 export default postsSlice.reducer;
