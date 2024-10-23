@@ -58,8 +58,8 @@ export default function Page() {
 
   const handleDemoLogin = async () => {
     const values: loginData = {
-      email: "za3bolaa@gmail.com",
-      password: "Za3bola@1234",
+      email: "demo@demo.com",
+      password: "B*i29#^^jF%bJ9qaILi4",
     };
     handleLogin(values);
   };
@@ -81,7 +81,7 @@ export default function Page() {
   }, [isAuth, router]);
 
   return (
-    <Card className="w-[350px] mx-auto">
+    <Card className="w-[350px] mx-auto md:mt-32">
       <CardHeader>
         <CardTitle className="text-2xl">Login Now:</CardTitle>
       </CardHeader>
