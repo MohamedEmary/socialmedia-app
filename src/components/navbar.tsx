@@ -14,7 +14,7 @@ import {
 import Image from "next/image";
 import logo from "../assets/logo.png";
 import { ModeToggle } from "./ui/dark-toggle";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import reduxStore, { RootState } from "@/lib/Redux/ReduxStore";
 import { getMyData } from "@/lib/Redux/PostsSlice";
@@ -25,8 +25,8 @@ export function Navbar() {
   const dispatch = useDispatch<typeof reduxStore.dispatch>();
   const isAuth = useSelector((state: RootState) => state.auth.isAuth);
   const myInfo = useSelector((state: RootState) => state.posts.myInfo);
-
   const currentPath = usePathname();
+  const [isMounted, setIsMounted] = useState(false);
 
   const handleLogout = () => {
     dispatch(clearUserData());
@@ -37,6 +37,14 @@ export function Navbar() {
       dispatch(getMyData());
     }
   }, [isAuth, dispatch]);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <nav className="flex items-center justify-between md:fixed top-0 w-full z-10 px-4 py-2 border-b dark:bg-black bg-white">
