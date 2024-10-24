@@ -86,7 +86,7 @@ export default function PostHeader({
       <div className="flex-1">
         <h2 className="text-lg font-semibold">{user.name}</h2>
         <p
-          className="text-sm text-gray-500 cursor-pointer"
+          className="text-sm text-gray-500 cursor-pointer inline-block"
           onClick={() => handleOpenPost(postId)}>
           {formatDate(createdAt)}
         </p>

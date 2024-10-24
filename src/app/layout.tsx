@@ -19,12 +19,6 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-// Temporarily commented
-// export const metadata: Metadata = {
-//   title: "Social App",
-//   description: "A social media app",
-// };
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -32,6 +26,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <title>Social Media App</title>
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider
