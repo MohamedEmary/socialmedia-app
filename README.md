@@ -1,4 +1,4 @@
-# My App
+# Social Media App
 
 This is a Next.js **Social Media Application** built with React, Redux, ShadCN and Tailwind CSS. The project features user authentication, post and comment creation, editing, and deletion, user profile image upload, and dark and light mode themes.
 
