@@ -81,7 +81,7 @@ export default function Page() {
   }, [isAuth, router]);
 
   return (
-    <Card className="w-[350px] mx-auto md:mt-32">
+    <Card className="w-full sm:w-[400px] mx-auto md:mt-32">
       <CardHeader>
         <CardTitle className="text-2xl">Login Now:</CardTitle>
       </CardHeader>
